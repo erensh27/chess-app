@@ -9,7 +9,7 @@ ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 SRC="$ROOT/engines/src"
 OUT_BASE="$ROOT/DroidFishApp/src/main/jniLibs"
 NDK="${ANDROID_NDK_HOME:-$ANDROID_HOME/ndk/25.2.9519653}"
-API=21
+API=24
 HOST_TAG=linux-x86_64
 TOOLCHAIN="$NDK/toolchains/llvm/prebuilt/$HOST_TAG/bin"
 
@@ -22,7 +22,7 @@ declare -A DEFS=( [arm64-v8a]="-DIS_64BIT -DUSE_POPCNT -DUSE_NEON -DUSE_NEON_DOT
 declare -A CFG=(
   [stockfish]="src:c++17:-DUSE_PTHREADS"
   [shashchess]="src:c++17:"
-  [ravager]="src:c11:"
+  [ravager]="src:c11:EXCLUDE:tuner.c"
   [tucano]="src:c11:"
   [ethereal]="src:c11:"
   [demolito]="src:c11:"
