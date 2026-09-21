@@ -1,64 +1,82 @@
 #!/usr/bin/env bash
-# Engine Arena: cross-compile every engine in engines/manifest.json for
-# arm64-v8a + armeabi-v7a as PIE executables named lib<id>.so into
-# DroidFishApp/src/main/jniLibs/<abi>/ (native lib dir = exec permission on
-# Android 10+). Continues past per-engine failures and prints a summary.
+# Engine Arena build_engines.sh v2
+# Builds the LIVE engine set (stockfish, ravager, patricia) for Android as
+# PIE executables named lib<id>.so into engines/bin/<abi>/.
+# Recipes use each engine's own build files/flags (learned from the v1
+# generic-recipe failure map). Patches live in scripts/patches/ and are
+# applied idempotently. armeabi-v7a is best-effort; arm64-v8a is the gate.
 set -uo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 SRC="$ROOT/engines/src"
-OUT_BASE="$ROOT/DroidFishApp/src/main/jniLibs"
-NDK="${ANDROID_NDK_HOME:-$ANDROID_HOME/ndk/25.2.9519653}"
+OUT="$ROOT/engines/bin"
+NDK="${ANDROID_NDK_HOME:-$(ls -d "${ANDROID_HOME:-/opt}/ndk/"* 2>/dev/null | sort -V | tail -1)}"
+TC="$NDK/toolchains/llvm/prebuilt/linux-x86_64/bin"
 API=24
-HOST_TAG=linux-x86_64
-TOOLCHAIN="$NDK/toolchains/llvm/prebuilt/$HOST_TAG/bin"
-
-ABIS="arm64-v8a armeabi-v7a"
-declare -A TRIPLE=( [arm64-v8a]=aarch64-linux-android [armeabi-v7a]=armv7a-linux-androideabi )
-declare -A ARCHFLAGS=( [arm64-v8a]="-march=armv8.2-a+dotprod" [armeabi-v7a]="-march=armv7-a -mfpu=neon -mfloat-abi=softfp -mthumb" )
-declare -A DEFS=( [arm64-v8a]="-DIS_64BIT -DUSE_POPCNT -DUSE_NEON -DUSE_NEON_DOTPROD" [armeabi-v7a]="-DUSE_NEON" )
-
-# per-engine overrides: id:srcdir:cstd:extra-flags (srcdir relative to engine root, cstd e.g. c++17/c++20/c11)
-declare -A CFG=(
-  [stockfish]="src:c++17:-DUSE_PTHREADS"
-  [shashchess]="src:c++17:"
-  [ravager]="src:c11:EXCLUDE:tuner.c"
-  [tucano]="src:c11:"
-  [ethereal]="src:c11:"
-  [demolito]="src:c11:"
-  [weiss]="src:c11:"
-  [xiphos]="src:c11:"
-  [stash]="src:c11:"
-  [goob]="src:c11:"
-)
-
+STRIP="$TC/llvm-strip"
+ABIS="${ABIS:-arm64-v8a}"
 ok=(); fail=()
-for eng in $(python3 -c "import json;print(' '.join(e['id'] for e in json.load(open('$ROOT/engines/manifest.json'))['engines']))"); do
-  ed="$SRC/$eng"
-  [ -d "$ed" ] || { echo "SKIP $eng (no source)"; continue; }
-  lang=$(python3 -c "import json;m=json.load(open('$ROOT/engines/manifest.json'));print([e['lang'] for e in m['engines'] if e['id']=='$eng'][0])")
-  if [ "$lang" = "Rust" ]; then echo "RUST $eng (handled by build_rust.sh)"; continue; fi
-  IFS=':' read -r srcdir std extra <<< "${CFG[$eng]:-src:c++17:}"
-  [ -d "$ed/$srcdir" ] || srcdir=.
-  for abi in $ABIS; do
-    cxx="$TOOLCHAIN/${TRIPLE[$abi]}$API-clang++"
-    cc="$TOOLCHAIN/${TRIPLE[$abi]}$API-clang"
-    mkdir -p "$OUT_BASE/$abi"
-    tmp="/tmp/ea-build-$eng-$abi"; rm -rf "$tmp"; mkdir -p "$tmp"
-    flags="-O3 -DNDEBUG -fPIE -pie -static-libstdc++ -fexceptions -frtti ${ARCHFLAGS[$abi]} ${DEFS[$abi]} $extra -Wl,-s"
-    # gather sources
-    (cd "$ed/$srcdir" && find . -name '*.cpp' -o -name '*.cc' -o -name '*.c' | grep -v -i -E 'test|unit|example|/tbprobe$' > "$tmp/files.txt")
-    # stockfish-family: fetch default nets if incbin references them and files are missing
-    if [ "$eng" = "stockfish" ] && [ ! -f "$ed/src/$(grep -o 'nn-[a-z0-9]*\.nnue' "$ed/src/evaluate.h" 2>/dev/null | head -1)" ]; then
-      (cd "$ed/src" && make net >/dev/null 2>&1 || true)
-    fi
-    nfiles=$(wc -l < "$tmp/files.txt")
-    if (cd "$ed/$srcdir" && $cxx $flags -std=$std @<(sed 's|^|'"$ed/$srcdir/"'|' "$tmp/files.txt" | sed "s|^$ed/$srcdir/\./|$ed/$srcdir/|") -o "$tmp/lib$eng.so" ) >"$tmp/log" 2>&1; then
-      cp "$tmp/lib$eng.so" "$OUT_BASE/$abi/lib$eng.so"
-      echo "OK   $eng $abi ($nfiles files)"
-    else
-      echo "FAIL $eng $abi - see /tmp/ea-build-$eng-$abi/log"
-    fi
-  done
+
+note() { echo "== $*"; }
+done_ok() { ok+=("$1"); echo "OK   $1"; }
+done_fail() { fail+=("$1"); echo "FAIL $1 (see $2)"; }
+
+apply_patch() { # apply_patch <engine> <patchfile>
+  (cd "$SRC/$1" && git apply --check "$ROOT/scripts/patches/$2" 2>/dev/null && git apply "$ROOT/scripts/patches/$2" && echo "patch $2 applied") || true
+}
+
+build_stockfish() { # $1=abi
+  local abi=$1 triple arch
+  case $abi in
+    arm64-v8a) triple=aarch64-linux-android; arch=armv8-dotprod ;;
+    armeabi-v7a) triple=armv7a-linux-androideabi; arch=armv7-neon ;;
+  esac
+  local cxx="$TC/${triple}${API}-clang++"
+  ( cd "$SRC/stockfish/src"
+    grep -o 'nn-[a-z0-9]*\.nnue' evaluate.h | sort -u | while read -r n; do [ -f "$n" ] || make net >/dev/null 2>&1; done
+    make -j"$(nproc)" build ARCH="$arch" COMP=clang CXX="$cxx" LDFLAGS=-latomic ) > /tmp/ea-sf-$abi.log 2>&1 || { done_fail "stockfish $abi" /tmp/ea-sf-$abi.log; return; }
+  mkdir -p "$OUT/$abi"
+  "$STRIP" "$SRC/stockfish/src/stockfish" -o "$OUT/$abi/libstockfish.so"
+  done_ok "stockfish $abi"
+}
+
+build_ravager() { # $1=abi
+  local abi=$1 triple flags
+  case $abi in
+    arm64-v8a) triple=aarch64-linux-android; flags="-O3 -DNDEBUG -fPIE -pie -march=armv8.2-a+dotprod -DUSE_NEON -DUSE_NEON_DOTPROD" ;;
+    armeabi-v7a) triple=armv7a-linux-androideabi; flags="-O3 -DNDEBUG -fPIE -pie -march=armv7-a -mfpu=neon -mfloat-abi=softfp -mthumb -DUSE_NEON" ;;
+  esac
+  local cc="$TC/${triple}${API}-clang"
+  local net; net=$(grep -m1 '^EVALFILE ?=' "$SRC/ravager/Makefile" | awk '{print $3}')
+  local srcs="src/bitboard.c src/board.c src/movegen.c src/see.c src/evaluate.c src/params.c src/tt.c src/search.c src/nnue.c src/tb/tbprobe.c src/tb_syzygy.c src/uci.c"
+  ( cd "$SRC/ravager" && $cc $flags -std=c11 -DEVALFILE=\"$net\" $srcs -o /tmp/libravager-$abi.so ) > /tmp/ea-ravager-$abi.log 2>&1 || { done_fail "ravager $abi" /tmp/ea-ravager-$abi.log; return; }
+  mkdir -p "$OUT/$abi"
+  "$STRIP" /tmp/libravager-$abi.so -o "$OUT/$abi/libravager.so"
+  done_ok "ravager $abi"
+}
+
+build_patricia() { # $1=abi
+  local abi=$1 triple flags
+  case $abi in
+    arm64-v8a) triple=aarch64-linux-android; flags="-march=armv8.2-a+dotprod" ;;
+    armeabi-v7a) triple=armv7a-linux-androideabi; flags="-march=armv7-a -mfpu=neon -mfloat-abi=softfp -mthumb" ;;
+  esac
+  local cxx="$TC/${triple}${API}-clang++"
+  apply_patch patricia patricia-assume-aligned.patch
+  ( cd "$SRC/patricia/engine" && $cxx -O3 -std=c++20 -ffast-math $flags -pthread -static-libstdc++ src/patricia.cpp src/fathom/src/tbprobe.c -o /tmp/libpatricia-$abi.so ) > /tmp/ea-patricia-$abi.log 2>&1 || { done_fail "patricia $abi" /tmp/ea-patricia-$abi.log; return; }
+  mkdir -p "$OUT/$abi"
+  "$STRIP" /tmp/libpatricia-$abi.so -o "$OUT/$abi/libpatricia.so"
+  done_ok "patricia $abi"
+}
+
+note "NDK: $NDK"
+for abi in $ABIS; do
+  build_stockfish "$abi"
+  build_ravager "$abi"
+  build_patricia "$abi"
 done
-echo; echo "Built binaries:"; find "$OUT_BASE" -name 'lib*.so' | sort
+echo
+echo "== SUMMARY =="
+printf 'OK:   %s\n' "${ok[@]:-none}"
+printf 'FAIL: %s\n' "${fail[@]:-none}"
+ls -la "$OUT"/*/ 2>/dev/null

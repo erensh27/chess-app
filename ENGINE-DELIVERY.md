@@ -40,6 +40,15 @@ Modern NNUE engines assume 64-bit (e.g. __uint128_t TT indexing). Engines
 that cannot build for armeabi-v7a ship arm64-v8a-only; the app filters the
 catalog by device ABI. scripts/patches/ carries 32-bit shims where feasible.
 
+## Launch scope (user steering 2026-09-21 7:26 PM)
+
+ONLY three engines visible in the app: Stockfish 19, Ravager 2.0, Patricia
+5.1 (latest). No greyed-out "coming soon" entries - polish over breadth.
+All features must actually work: arena matches AND self-play between the
+same engine (mirror matches), independent clocks per side, FEN starts.
+Roster expansion happens incrementally after the 3-engine pipeline is
+proven end to end (build -> release assets -> in-app download -> match).
+
 ## Arena match picker (user steering 2026-09-21 6:46 PM)
 
 Both engine dropdowns list EVERY engine in the catalog, each showing its

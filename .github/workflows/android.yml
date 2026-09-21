@@ -36,6 +36,25 @@ jobs:
           echo "ANDROID_NDK_HOME=$NDK_HOME" >> "$GITHUB_ENV"
       - name: Build engines (NDK cross-compile)
         run: ./scripts/build_engines.sh
+      - name: Package engine zips (binary + LICENSE per engine per ABI)
+        run: |
+          mkdir -p engines/dist
+          for dir in engines/bin/*; do
+            abi=$(basename "$dir")
+            for so in "$dir"/*.so; do
+              [ -e "$so" ] || continue
+              id=$(basename "$so" .so); id=${id#lib}
+              lic=$(find "engines/src/$id" -maxdepth 2 -iname 'LICENSE*' -o -maxdepth 2 -iname 'COPYING*' 2>/dev/null | head -1)
+              if [ -n "$lic" ]; then zip -j "engines/dist/${id}-${abi}.zip" "$so" "$lic"; else zip -j "engines/dist/${id}-${abi}.zip" "$so"; fi
+            done
+          done
+          ls -la engines/dist/
+      - name: Publish engines-latest release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: engines-latest
+          name: Engine packs (latest)
+          files: engines/dist/*.zip
       - name: Assemble debug APK
         run: ./gradlew :DroidFishApp:assembleDebug --stacktrace
       - name: Upload APK

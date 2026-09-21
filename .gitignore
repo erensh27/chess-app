@@ -11,3 +11,4 @@ engines/work/
 engines/bin/
 *.apk
 *.keystore
+engines/dist/
