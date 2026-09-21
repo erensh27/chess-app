@@ -6,6 +6,11 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      # blackmarlin's net is a git-lfs object; upstream LFS budget is exceeded,
+      # so the smudge filter must not try to fetch it during checkout.
+      # The net is downloaded from release assets at build time instead.
+      GIT_LFS_SKIP_SMUDGE: "1"
     steps:
       - uses: actions/checkout@v4
         with:
@@ -18,7 +23,9 @@ jobs:
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
       - name: Install NDK
-        run: sdkmanager "ndk;25.2.9519653" "cmake;3.22.1"
+        run: |
+          yes | sdkmanager --licenses >/dev/null
+          sdkmanager "ndk;25.2.9519653" "cmake;3.22.1"
       - name: Build engines (NDK cross-compile)
         run: ./scripts/build_engines.sh
       - name: Assemble debug APK
