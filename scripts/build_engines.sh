@@ -35,7 +35,7 @@ declare -A CFG=(
 ok=(); fail=()
 for eng in $(python3 -c "import json;print(' '.join(e['id'] for e in json.load(open('$ROOT/engines/manifest.json'))['engines']))"); do
   ed="$SRC/$eng"
-  [ -d "$ed" ] || { echo "SKIP $eng (no source)"; continue; done
+  [ -d "$ed" ] || { echo "SKIP $eng (no source)"; continue; }
   lang=$(python3 -c "import json;m=json.load(open('$ROOT/engines/manifest.json'));print([e['lang'] for e in m['engines'] if e['id']=='$eng'][0])")
   if [ "$lang" = "Rust" ]; then echo "RUST $eng (handled by build_rust.sh)"; continue; fi
   IFS=':' read -r srcdir std extra <<< "${CFG[$eng]:-src:c++17:}"
