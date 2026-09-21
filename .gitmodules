@@ -1,0 +1,66 @@
+[submodule "engines/src/stockfish"]
+	path = engines/src/stockfish
+	url = https://github.com/official-stockfish/Stockfish
+[submodule "engines/src/shashchess"]
+	path = engines/src/shashchess
+	url = https://github.com/amchess/ShashChess
+[submodule "engines/src/plentychess"]
+	path = engines/src/plentychess
+	url = https://github.com/Yoshie2000/PlentyChess
+[submodule "engines/src/viridithas"]
+	path = engines/src/viridithas
+	url = https://github.com/cosmobobak/viridithas
+[submodule "engines/src/stormphrax"]
+	path = engines/src/stormphrax
+	url = https://github.com/Ciekce/Stormphrax
+[submodule "engines/src/obsidian"]
+	path = engines/src/obsidian
+	url = https://github.com/gab8192/Obsidian
+[submodule "engines/src/cinder"]
+	path = engines/src/cinder
+	url = https://github.com/brunocodutra/cinder
+[submodule "engines/src/berserk"]
+	path = engines/src/berserk
+	url = https://github.com/jhonnold/berserk
+[submodule "engines/src/halogen"]
+	path = engines/src/halogen
+	url = https://github.com/KierenP/Halogen
+[submodule "engines/src/caissa"]
+	path = engines/src/caissa
+	url = https://github.com/Witek902/Caissa
+[submodule "engines/src/igel"]
+	path = engines/src/igel
+	url = https://github.com/vshcherbyna/igel
+[submodule "engines/src/ethereal"]
+	path = engines/src/ethereal
+	url = https://github.com/AndyGrant/Ethereal
+[submodule "engines/src/clarity"]
+	path = engines/src/clarity
+	url = https://github.com/Vast342/Clarity
+[submodule "engines/src/koivisto"]
+	path = engines/src/koivisto
+	url = https://github.com/Luecx/Koivisto
+[submodule "engines/src/patricia"]
+	path = engines/src/patricia
+	url = https://github.com/Adam-Kulju/Patricia
+[submodule "engines/src/texel"]
+	path = engines/src/texel
+	url = https://github.com/peterosterlund2/texel
+[submodule "engines/src/akimbo"]
+	path = engines/src/akimbo
+	url = https://github.com/jw1912/akimbo
+[submodule "engines/src/altair"]
+	path = engines/src/altair
+	url = https://github.com/Alex2262/AltairChessEngine
+[submodule "engines/src/carp"]
+	path = engines/src/carp
+	url = https://github.com/dede1751/carp
+[submodule "engines/src/willow"]
+	path = engines/src/willow
+	url = https://github.com/Adam-Kulju/Willow
+[submodule "engines/src/tucano"]
+	path = engines/src/tucano
+	url = https://github.com/alcides-schulz/Tucano
+[submodule "engines/src/ravager"]
+	path = engines/src/ravager
+	url = https://github.com/erensh27/Ravager
