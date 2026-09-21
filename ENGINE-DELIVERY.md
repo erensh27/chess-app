@@ -30,10 +30,9 @@ CI (.github/workflows) cross-builds all engines for arm64-v8a and
 armeabi-v7a and publishes them as GitHub Release assets on this repo
 (per-engine per-ABI zips: lib<id>.so + net if external + LICENSE).
 
-While the repo is PRIVATE, release assets need auth, so the app cannot
-download anonymously. Interim: engine packs are installed manually from CI
-artifacts/releases (user is logged in). When the repo goes public (planned),
-in-app downloads become anonymous. No tokens ship in the app.
+The repo is PUBLIC (flipped 2026-09-21 6:47 PM IST), so the app downloads
+engine packs anonymously straight from the engines-latest release. No tokens
+ship in the app.
 
 ## 32-bit note
 
