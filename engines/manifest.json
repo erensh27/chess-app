@@ -1,11 +1,31 @@
 {
-  "comment": "Engine registry. Every engine must have: verified upstream repo + commit/tag, redistribution-compatible license (SPDX), real CCRL rating (list + rating as listed), and NDK build status. Fizbo is EXCLUDED (no license file - illegal to redistribute).",
+  "comment": "Engine Arena registry. Verified 2026-09-21: ratings from CCRL 40/15 complete list (computerchess.org.uk/ccrl/4040, 64-bit 1CPU entries); licenses from each upstream repo (GitHub license detection + vendored LICENSE file in engines/src/<id>); Fizbo EXCLUDED (no license file); Sirius EXCLUDED (mcthouacbb/Sirius has no license); pawnocchio skipped (Zig toolchain). Nets: each engine's default net ships with its source or is fetched at build time per recipe.",
   "abiTargets": ["arm64-v8a", "armeabi-v7a"],
+  "ratingSource": "CCRL 40/15",
   "engines": [
-    {"id": "stockfish", "name": "Stockfish", "upstream": "https://github.com/official-stockfish/Stockfish", "license": "GPL-3.0-only", "ccrl": {"list": "40/15", "rating": null}, "pin": null, "ndk": "pending", "notes": "pinned in manifest decision; rating + pin to fill"},
-    {"id": "patricia", "name": "Patricia", "upstream": "https://github.com/Adam-Kulju/Patricia", "license": "MIT", "ccrl": {"list": "40/15", "rating": null}, "pin": null, "ndk": "pending"},
-    {"id": "cinder", "name": "Cinder", "upstream": "https://github.com/brunocodutra/cinder", "license": "GPL-3.0-only", "ccrl": {"list": "40/15", "rating": null}, "pin": null, "ndk": "pending"},
-    {"id": "ravager", "name": "Ravager", "upstream": "https://github.com/erensh27/Ravager", "license": "MIT", "ccrl": {"list": "40/15", "rating": 3194}, "pin": null, "ndk": "pending", "notes": "Ravager 2.0 64-bit: 3194 +/-92 over 29 games, unranked (<200 games). User's own engine."},
-    {"id": "berserk", "name": "Berserk", "upstream": "https://github.com/jhonnold/berserk", "license": "GPL-3.0-only", "ccrl": {"list": "40/15", "rating": null}, "pin": null, "ndk": "pending", "notes": "license/source verification pending"}
+    {"id": "stockfish",   "name": "Stockfish 19",        "ccrl": 3631, "upstream": "https://github.com/official-stockfish/Stockfish", "license": "GPL-3.0", "lang": "C++", "ndk": "pending"},
+    {"id": "shashchess",  "name": "ShashChess Santiago", "ccrl": 3620, "upstream": "https://github.com/amchess/ShashChess", "license": "GPL-3.0", "lang": "C++", "ndk": "pending"},
+    {"id": "plentychess", "name": "PlentyChess 8.0.0",   "ccrl": 3618, "upstream": "https://github.com/Yoshie2000/PlentyChess", "license": "GPL-3.0", "lang": "C++", "ndk": "pending"},
+    {"id": "viridithas",  "name": "Viridithas 20.0.0",   "ccrl": 3613, "upstream": "https://github.com/cosmobobak/viridithas", "license": "AGPL-3.0", "lang": "Rust", "ndk": "pending"},
+    {"id": "stormphrax",  "name": "Stormphrax 8.0.0",    "ccrl": 3609, "upstream": "https://github.com/Ciekce/Stormphrax", "license": "GPL-3.0", "lang": "C++", "ndk": "pending"},
+    {"id": "obsidian",    "name": "Obsidian 16.0",       "ccrl": 3605, "upstream": "https://github.com/gab8192/Obsidian", "license": "GPL-3.0", "lang": "C++", "ndk": "pending"},
+    {"id": "cinder",      "name": "Cinder 0.6.1",        "ccrl": 3605, "upstream": "https://github.com/brunocodutra/cinder", "license": "GPL-3.0", "lang": "Rust", "ndk": "pending", "notes": "pinned"},
+    {"id": "berserk",     "name": "Berserk 14",          "ccrl": 3603, "upstream": "https://github.com/jhonnold/berserk", "license": "GPL-3.0", "lang": "C++", "ndk": "pending", "notes": "license verified GPL-3.0"},
+    {"id": "halogen",     "name": "Halogen 16",          "ccrl": 3594, "upstream": "https://github.com/KierenP/Halogen", "license": "GPL-3.0", "lang": "C++", "ndk": "pending"},
+    {"id": "caissa",      "name": "Caissa 1.25",         "ccrl": 3591, "upstream": "https://github.com/Witek902/Caissa", "license": "MIT", "lang": "C++", "ndk": "pending"},
+    {"id": "clover",      "name": "Clover 9.1",          "ccrl": 3586, "upstream": "https://github.com/lucametehau/CloverEngine", "license": "GPL-3.0", "lang": "C++", "ndk": "pending"},
+    {"id": "igel",        "name": "Igel 3.7.0",          "ccrl": 3576, "upstream": "https://github.com/vshcherbyna/igel", "license": "GPL-3.0", "lang": "C++", "ndk": "pending"},
+    {"id": "ethereal",    "name": "Ethereal 14.25",      "ccrl": 3566, "upstream": "https://github.com/AndyGrant/Ethereal", "license": "GPL-3.0", "lang": "C", "ndk": "pending"},
+    {"id": "clarity",     "name": "Clarity 8.0.0",       "ccrl": 3532, "upstream": "https://github.com/Vast342/Clarity", "license": "GPL-3.0", "lang": "C++", "ndk": "pending"},
+    {"id": "koivisto",    "name": "Koivisto 9.0",        "ccrl": 3523, "upstream": "https://github.com/Luecx/Koivisto", "license": "GPL-3.0", "lang": "C++", "ndk": "pending"},
+    {"id": "patricia",    "name": "Patricia 5.1",        "ccrl": 3488, "upstream": "https://github.com/Adam-Kulju/Patricia", "license": "MIT", "lang": "C++", "ndk": "pending", "notes": "pinned"},
+    {"id": "blackmarlin", "name": "Black Marlin 9.0",    "ccrl": 3487, "upstream": "https://github.com/jnlt3/blackmarlin", "license": "GPL-3.0", "lang": "Rust", "ndk": "pending"},
+    {"id": "texel",       "name": "Texel 1.12",          "ccrl": 3482, "upstream": "https://github.com/peterosterlund2/texel", "license": "GPL-3.0", "lang": "C++", "ndk": "pending"},
+    {"id": "akimbo",      "name": "akimbo 1.0.0",        "ccrl": 3475, "upstream": "https://github.com/jw1912/akimbo", "license": "MIT", "lang": "Rust", "ndk": "pending"},
+    {"id": "altair",      "name": "Altair 7.0.0",        "ccrl": 3475, "upstream": "https://github.com/Alex2262/AltairChessEngine", "license": "MIT", "lang": "C++", "ndk": "pending"},
+    {"id": "carp",        "name": "Carp 3.0.0",          "ccrl": 3454, "upstream": "https://github.com/dede1751/carp", "license": "GPL-3.0", "lang": "Rust", "ndk": "pending"},
+    {"id": "willow",      "name": "Willow 4.0",          "ccrl": 3445, "upstream": "https://github.com/Adam-Kulju/Willow", "license": "MIT", "lang": "C++", "ndk": "pending"},
+    {"id": "tucano",      "name": "Tucano 12.00",        "ccrl": 3434, "upstream": "https://github.com/alcides-schulz/Tucano", "license": "GPL-3.0", "lang": "C", "ndk": "pending"},
+    {"id": "ravager",     "name": "Ravager 2.0",         "ccrl": 3194, "upstream": "https://github.com/erensh27/Ravager", "license": "MIT", "lang": "C11", "ndk": "pending", "notes": "pinned; CCRL 3194 +/-92 over 29 games (unranked, <200 games); user's own engine"}
   ]
 }
