@@ -1,66 +1,180 @@
 [submodule "engines/src/stockfish"]
 	path = engines/src/stockfish
 	url = https://github.com/official-stockfish/Stockfish
+	shallow = true
 [submodule "engines/src/shashchess"]
 	path = engines/src/shashchess
 	url = https://github.com/amchess/ShashChess
+	shallow = true
 [submodule "engines/src/plentychess"]
 	path = engines/src/plentychess
 	url = https://github.com/Yoshie2000/PlentyChess
+	shallow = true
 [submodule "engines/src/viridithas"]
 	path = engines/src/viridithas
 	url = https://github.com/cosmobobak/viridithas
+	shallow = true
 [submodule "engines/src/stormphrax"]
 	path = engines/src/stormphrax
 	url = https://github.com/Ciekce/Stormphrax
+	shallow = true
 [submodule "engines/src/obsidian"]
 	path = engines/src/obsidian
 	url = https://github.com/gab8192/Obsidian
+	shallow = true
 [submodule "engines/src/cinder"]
 	path = engines/src/cinder
 	url = https://github.com/brunocodutra/cinder
+	shallow = true
 [submodule "engines/src/berserk"]
 	path = engines/src/berserk
 	url = https://github.com/jhonnold/berserk
+	shallow = true
 [submodule "engines/src/halogen"]
 	path = engines/src/halogen
 	url = https://github.com/KierenP/Halogen
+	shallow = true
 [submodule "engines/src/caissa"]
 	path = engines/src/caissa
 	url = https://github.com/Witek902/Caissa
+	shallow = true
+[submodule "engines/src/clover"]
+	path = engines/src/clover
+	url = https://github.com/lucametehau/CloverEngine
+	shallow = true
 [submodule "engines/src/igel"]
 	path = engines/src/igel
 	url = https://github.com/vshcherbyna/igel
+	shallow = true
 [submodule "engines/src/ethereal"]
 	path = engines/src/ethereal
 	url = https://github.com/AndyGrant/Ethereal
+	shallow = true
 [submodule "engines/src/clarity"]
 	path = engines/src/clarity
 	url = https://github.com/Vast342/Clarity
+	shallow = true
 [submodule "engines/src/koivisto"]
 	path = engines/src/koivisto
 	url = https://github.com/Luecx/Koivisto
+	shallow = true
 [submodule "engines/src/patricia"]
 	path = engines/src/patricia
 	url = https://github.com/Adam-Kulju/Patricia
+	shallow = true
+[submodule "engines/src/blackmarlin"]
+	path = engines/src/blackmarlin
+	url = https://github.com/jnlt3/blackmarlin
+	shallow = true
 [submodule "engines/src/texel"]
 	path = engines/src/texel
 	url = https://github.com/peterosterlund2/texel
+	shallow = true
 [submodule "engines/src/akimbo"]
 	path = engines/src/akimbo
 	url = https://github.com/jw1912/akimbo
+	shallow = true
 [submodule "engines/src/altair"]
 	path = engines/src/altair
 	url = https://github.com/Alex2262/AltairChessEngine
+	shallow = true
 [submodule "engines/src/carp"]
 	path = engines/src/carp
 	url = https://github.com/dede1751/carp
+	shallow = true
 [submodule "engines/src/willow"]
 	path = engines/src/willow
 	url = https://github.com/Adam-Kulju/Willow
+	shallow = true
 [submodule "engines/src/tucano"]
 	path = engines/src/tucano
 	url = https://github.com/alcides-schulz/Tucano
+	shallow = true
 [submodule "engines/src/ravager"]
 	path = engines/src/ravager
 	url = https://github.com/erensh27/Ravager
+	shallow = true
+[submodule "engines/src/zangdar"]
+	path = engines/src/zangdar
+	url = https://github.com/Carbecq/Zangdar
+	shallow = true
+[submodule "engines/src/simbelmyne"]
+	path = engines/src/simbelmyne
+	url = https://github.com/sroelants/simbelmyne
+	shallow = true
+[submodule "engines/src/defenchess"]
+	path = engines/src/defenchess
+	url = https://github.com/cetincan0/Defenchess
+	shallow = true
+[submodule "engines/src/xiphos"]
+	path = engines/src/xiphos
+	url = https://github.com/milostatarevic/xiphos
+	shallow = true
+[submodule "engines/src/cheng"]
+	path = engines/src/cheng
+	url = https://github.com/phenri/cheng4
+	shallow = true
+[submodule "engines/src/smallbrain"]
+	path = engines/src/smallbrain
+	url = https://github.com/Disservin/Smallbrain
+	shallow = true
+[submodule "engines/src/ice4"]
+	path = engines/src/ice4
+	url = https://github.com/analog-hors/ice4
+	shallow = true
+[submodule "engines/src/princhess"]
+	path = engines/src/princhess
+	url = https://github.com/princesslana/princhess
+	shallow = true
+[submodule "engines/src/rice"]
+	path = engines/src/rice
+	url = https://github.com/rafid-dev/rice
+	shallow = true
+[submodule "engines/src/stash"]
+	path = engines/src/stash
+	url = https://github.com/mhouppin/stash-bot
+	shallow = true
+[submodule "engines/src/laser"]
+	path = engines/src/laser
+	url = https://github.com/jeffreyan11/laser-chess-engine
+	shallow = true
+[submodule "engines/src/drofa"]
+	path = engines/src/drofa
+	url = https://github.com/justNo4b/Drofa
+	shallow = true
+[submodule "engines/src/winter"]
+	path = engines/src/winter
+	url = https://github.com/rosenthj/Winter
+	shallow = true
+[submodule "engines/src/demolito"]
+	path = engines/src/demolito
+	url = https://github.com/lucasart/Demolito
+	shallow = true
+[submodule "engines/src/schoenemann"]
+	path = engines/src/schoenemann
+	url = https://github.com/Jochengehtab/Schoenemann
+	shallow = true
+[submodule "engines/src/weiss"]
+	path = engines/src/weiss
+	url = https://github.com/TerjeKir/weiss
+	shallow = true
+[submodule "engines/src/bitgenie"]
+	path = engines/src/bitgenie
+	url = https://github.com/Aryan1508/Bit-Genie
+	shallow = true
+[submodule "engines/src/rudim"]
+	path = engines/src/rudim
+	url = https://github.com/znxftw/rudim
+	shallow = true
+[submodule "engines/src/svart"]
+	path = engines/src/svart
+	url = https://github.com/1337crisis/svart
+	shallow = true
+[submodule "engines/src/grail"]
+	path = engines/src/grail
+	url = https://github.com/jorgenhanssen/grail
+	shallow = true
+[submodule "engines/src/goob"]
+	path = engines/src/goob
+	url = https://github.com/Gabrielkaos/ChessEngineGoobC
+	shallow = true
