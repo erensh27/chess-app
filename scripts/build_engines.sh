@@ -49,7 +49,7 @@ build_ravager() { # $1=abi
   local cc="$TC/${triple}${API}-clang"
   local net; net=$(grep -m1 '^EVALFILE ?=' "$SRC/ravager/Makefile" | awk '{print $3}')
   local srcs="src/bitboard.c src/board.c src/movegen.c src/see.c src/evaluate.c src/params.c src/tt.c src/search.c src/nnue.c src/tb/tbprobe.c src/tb_syzygy.c src/uci.c"
-  ( cd "$SRC/ravager" && $cc $flags -std=c11 -DEVALFILE=\"$net\" $srcs -o /tmp/libravager-$abi.so ) > /tmp/ea-ravager-$abi.log 2>&1 || { done_fail "ravager $abi" /tmp/ea-ravager-$abi.log; return; }
+  ( cd "$SRC/ravager" && $cc $flags -std=c11 -DEVALFILE=\"$net\" $srcs -lm -o /tmp/libravager-$abi.so ) > /tmp/ea-ravager-$abi.log 2>&1 || { done_fail "ravager $abi" /tmp/ea-ravager-$abi.log; return; }
   mkdir -p "$OUT/$abi"
   "$STRIP" /tmp/libravager-$abi.so -o "$OUT/$abi/libravager.so"
   done_ok "ravager $abi"
