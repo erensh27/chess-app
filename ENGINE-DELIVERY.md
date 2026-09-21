@@ -40,3 +40,10 @@ in-app downloads become anonymous. No tokens ship in the app.
 Modern NNUE engines assume 64-bit (e.g. __uint128_t TT indexing). Engines
 that cannot build for armeabi-v7a ship arm64-v8a-only; the app filters the
 catalog by device ABI. scripts/patches/ carries 32-bit shims where feasible.
+
+## Arena match picker (user steering 2026-09-21 6:46 PM)
+
+Both engine dropdowns list EVERY engine in the catalog, each showing its
+CCRL 40/15 rating. Mirror matches are allowed (Ravager vs Ravager,
+Stockfish vs Stockfish) - no filtering of the second dropdown based on the
+first selection. Independent time controls per side, FEN start support.
