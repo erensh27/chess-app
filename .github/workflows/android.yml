@@ -43,24 +43,24 @@ jobs:
           echo "ANDROID_NDK_HOME=$NDK_HOME" >> "$GITHUB_ENV"
       - name: Build engines (NDK cross-compile)
         run: ./scripts/build_engines.sh
-      - name: Publish engine build logs to build-logs branch
-        if: always()
-        run: |
-          git config user.email ci@enginearena.local
-          git config user.name "CI logbot"
-          git checkout -q --orphan build-logs-run || git checkout -q build-logs-run
-          git rm -rfq . 2>/dev/null || true
-          mkdir -p logs
-          cp /tmp/ea-*.log logs/ 2>/dev/null || true
-          { echo "run ${{ github.run_number }} sha ${{ github.sha }}"; date -u; } > logs/RUN.txt
-          git add -A && git commit -qm "engine build logs (run ${{ github.run_number }})" && git push -fq origin HEAD:refs/heads/build-logs || echo "log push failed (non-fatal)"
-          git checkout -q -
       - name: Verify all 3 engine binaries exist (arm64 gate)
         run: |
           ls -la engines/bin/arm64-v8a/
           for id in stockfish ravager patricia; do
             test -s "engines/bin/arm64-v8a/lib$id.so" || { echo "MISSING lib$id.so"; exit 1; }
           done
+      - name: Publish engine build logs to build-logs branch
+        if: always()
+        continue-on-error: true
+        run: |
+          git clone -q --depth 1 --branch build-logs "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}" /tmp/blog || { git clone -q --depth 1 "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}" /tmp/blog && git -C /tmp/blog checkout -qb build-logs; }
+          mkdir -p /tmp/blog/logs
+          cp /tmp/ea-*.log /tmp/blog/logs/ 2>/dev/null || true
+          { echo "run ${{ github.run_number }} sha ${{ github.sha }}"; date -u; } > /tmp/blog/logs/RUN.txt
+          git -C /tmp/blog config user.email ci@enginearena.local
+          git -C /tmp/blog config user.name "CI logbot"
+          git -C /tmp/blog add -A
+          git -C /tmp/blog commit -qm "engine build logs (run ${{ github.run_number }})" && git -C /tmp/blog push -q origin build-logs || echo "log push failed (non-fatal)"
       - name: Package engine zips (binary + LICENSE per engine per ABI)
         run: |
           mkdir -p engines/dist
