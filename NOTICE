@@ -1,0 +1,13 @@
+Engine Arena
+============
+
+Engine Arena is a fork of DroidFish 1.90 by Peter Osterlund
+(https://github.com/peterosterlund2/droidfish), licensed under GPLv3.
+DroidFish bundles CuckooChess by Peter Osterlund and an old Stockfish
+build by the Stockfish developers (GPLv3).
+
+Engine Arena itself is licensed GPLv3. See COPYING.
+
+Bundled chess engines are the work of their respective authors and are
+distributed under their own licenses (GPLv3 or MIT). Each engine's
+source pin, license, and CCRL rating is recorded in engines/manifest.json.

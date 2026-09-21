@@ -1,0 +1,13 @@
+.gradle/
+build/
+local.properties
+*.iml
+.idea/
+.cxx/
+.externalNativeBuild/
+.cxx
+DroidFishApp/build/
+engines/work/
+engines/bin/
+*.apk
+*.keystore

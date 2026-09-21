@@ -1,0 +1,11 @@
+{
+  "comment": "Engine registry. Every engine must have: verified upstream repo + commit/tag, redistribution-compatible license (SPDX), real CCRL rating (list + rating as listed), and NDK build status. Fizbo is EXCLUDED (no license file - illegal to redistribute).",
+  "abiTargets": ["arm64-v8a", "armeabi-v7a"],
+  "engines": [
+    {"id": "stockfish", "name": "Stockfish", "upstream": "https://github.com/official-stockfish/Stockfish", "license": "GPL-3.0-only", "ccrl": {"list": "40/15", "rating": null}, "pin": null, "ndk": "pending", "notes": "pinned in manifest decision; rating + pin to fill"},
+    {"id": "patricia", "name": "Patricia", "upstream": "https://github.com/Adam-Kulju/Patricia", "license": "MIT", "ccrl": {"list": "40/15", "rating": null}, "pin": null, "ndk": "pending"},
+    {"id": "cinder", "name": "Cinder", "upstream": "https://github.com/brunocodutra/cinder", "license": "GPL-3.0-only", "ccrl": {"list": "40/15", "rating": null}, "pin": null, "ndk": "pending"},
+    {"id": "ravager", "name": "Ravager", "upstream": "https://github.com/erensh27/Ravager", "license": "MIT", "ccrl": {"list": "40/15", "rating": 3194}, "pin": null, "ndk": "pending", "notes": "Ravager 2.0 64-bit: 3194 +/-92 over 29 games, unranked (<200 games). User's own engine."},
+    {"id": "berserk", "name": "Berserk", "upstream": "https://github.com/jhonnold/berserk", "license": "GPL-3.0-only", "ccrl": {"list": "40/15", "rating": null}, "pin": null, "ndk": "pending", "notes": "license/source verification pending"}
+  ]
+}
