@@ -20,12 +20,12 @@ jobs:
         with:
           distribution: temurin
           java-version: '11'
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
-      - name: Install NDK
+      - name: Install NDK (runner images ship the Android SDK preinstalled)
         run: |
+          export PATH="$ANDROID_HOME/cmdline-tools/latest/bin:$PATH"
           yes | sdkmanager --licenses >/dev/null
           sdkmanager "ndk;25.2.9519653" "cmake;3.22.1"
+          echo "ANDROID_NDK_HOME=$ANDROID_HOME/ndk/25.2.9519653" >> "$GITHUB_ENV"
       - name: Build engines (NDK cross-compile)
         run: ./scripts/build_engines.sh
       - name: Assemble debug APK
